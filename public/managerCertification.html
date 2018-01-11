@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html >
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0,maximum-scale=1.0">
+    <meta content="h5 view" name="description">
+    <meta content="h5 view" name="keywords">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- Set render engine for 360 browser -->
+    <meta name="renderer" content="webkit">
+    <!-- No Baidu Siteapp-->
+    <meta http-equiv="Cache-Control" content="no-siteapp"/>
+    <meta http-equiv="Cache-Control" content="no-transform" />
+    <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">  -->
+    <meta name = "format-detection" content="telephone = no" />
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/managerCertification.css">
+    <title></title>
+  </head>
+  <body>
+    <div id="app" class="app">
+        <div class="addAssistant_wrap">
+            <header class="header headerBorderbtm">
+                <p>店长认证</p>
+            </header>
+            <div class="addAssistant_con">
+                <div class="ass_infos addShopBox" id="addShopBox">
+                                
+                </div>
+                <div class="ass_infos" id="addShop">
+                    <p><span class="tit">管理门店</span> <input type="text" id="addInput" placeholder="请输入您线下管理的所有门店"></p>            
+                </div>
+                <div class="addbtn">
+                    <p id="addBtn">继续添加门店</p>
+                </div>
+                <p class="addAssistant_tishi">请填写账户信息</p>
+                <div class="ass_infos">
+                    <p class="borderbtm"><span class="tit">姓名</span> <input type="text" id="username" placeholder="请输入姓名"></p>
+                    <p class="borderbtm"><span class="tit">手机号</span> <input type="tel"  id="phoneCode" v-model="phone" placeholder="请输入手机号"></p>
+                    <p><span class="tit">身份证号</span> <input type="tel" id="cardCode" placeholder="请输入身份证号"></p>
+                </div>
+                <p class="addAssistant_tishi">请上传身份证正面照片</p>
+                <div class="addAssistant_phone_box">
+                    <div class="clearfix">
+                        <div class="fl addAssistant_phone cardtop">
+                            
+                        </div>
+                        <div class="fr addAssistant_phone" id="container">
+                                <span id="pickfiles">
+                                        点击上传图片
+                                </span>
+                                <img class="smallImg" id="pickfilesImg" src="" alt="">
+                                <!-- <input accept="image/*"  type="file" name="file" > -->
+                            
+                        </div>
+                    </div>
+                    <p class="addAssistant_phone_info">身份证正面需清晰拍摄</p>
+                </div>
+                <p class="addAssistant_tishi">请上传身份证反面照片</p>
+                <div class="addAssistant_phone_box">
+                    <div class="clearfix">
+                        <div class="fl addAssistant_phone carddown">
+                            
+                        </div>
+                        <div class="fr addAssistant_phone" id="container2">
+                                <span id="pickfiles2">点击上传图片</span>
+                                <!-- <input accept="image/*"  type="file" name="file" > -->
+                                <img class="smallImg" id="pickfiles2Img" src="" alt="">
+                        </div>
+                    </div>
+                    <p class="addAssistant_phone_info">身份证反面需清晰拍摄有效期限位置</p>
+                </div>
+                <p class="addAssistant_need"><span class="need">*</span>请点击发送验证码验证手机完成验证</p>
+                <div class="addAssistant_code_box clearfix">
+                    <input class="fl" type="tel" id="codeVal" placeholder="请输入手机接收的验证码">
+                    <!-- <span class="fr">发送验证码</span> -->
+                    <span class="code fr" id="sendCode" >发送验证码</span>
+                    <span class="countdown fr" id="timeBox"><span id="time"></span>s 后重获取</span>
+                </div>
+                <p class="addAssistant_red">添加信息后，焕熊通过短信发送登陆密码至账户手机，请提醒注意查收</p>
+                <div class="blue cir_btn addAssistant_save_btn" id="addAssistant_save_btn">确认提交</div>
+            </div>
+            <div class="markBox" id="markBox"><img id="bigImg" src="" alt=""></div>
+        </div>
+        <div class="toast" id="toast">请输入手机号码</div>
+    </div>
+    <script type="text/javascript">
+      !function(a,b){function c(){var b=f.getBoundingClientRect().width;b/i>540&&(b=540*i);var c=b/10;f.style.fontSize=c+"px",k.rem=a.rem=c}var d,e=a.document,f=e.documentElement,g=e.querySelector('meta[name="viewport"]'),h=e.querySelector('meta[name="flexible"]'),i=0,j=0,k=b.flexible||(b.flexible={});if(g){var l=g.getAttribute("content").match(/initial\-scale=([\d\.]+)/);l&&(j=parseFloat(l[1]),i=parseInt(1/j))}else{if(h){var m=h.getAttribute("content");if(m){var n=m.match(/initial\-dpr=([\d\.]+)/),o=m.match(/maximum\-dpr=([\d\.]+)/);n&&(i=parseFloat(n[1]),j=parseFloat((1/i).toFixed(2))),o&&(i=parseFloat(o[1]),j=parseFloat((1/i).toFixed(2)))}}}if(!i&&!j){var p=a.navigator.userAgent,q=(!!p.match(/android/gi),!!p.match(/iphone/gi)),r=q&&!!p.match(/OS 9_3/),s=a.devicePixelRatio;i=q&&!r?s>=3&&(!i||i>=3)?3:s>=2&&(!i||i>=2)?2:1:1,j=1/i}if(f.setAttribute("data-dpr",i),!g){if(g=e.createElement("meta"),g.setAttribute("name","viewport"),g.setAttribute("content","initial-scale="+j+", maximum-scale="+j+", minimum-scale="+j+", user-scalable=no"),f.firstElementChild){f.firstElementChild.appendChild(g)}else{var t=e.createElement("div");t.appendChild(g),e.write(t.innerHTML)}}a.addEventListener("resize",function(){clearTimeout(d),d=setTimeout(c,300)},!1),a.addEventListener("pageshow",function(a){a.persisted&&(clearTimeout(d),d=setTimeout(c,300))},!1),"complete"===e.readyState?e.body.style.fontSize=12*i+"px":e.addEventListener("DOMContentLoaded",function(){e.body.style.fontSize=12*i+"px"},!1),c(),k.dpr=a.dpr=i,k.refreshRem=c,k.rem2px=function(a){var b=parseFloat(a)*this.rem;return"string"==typeof a&&a.match(/rem$/)&&(b+="px"),b},k.px2rem=function(a){var b=parseFloat(a)/this.rem;return"string"==typeof a&&a.match(/px$/)&&(b+="rem"),b}}(window,window.lib||(window.lib={}));
+    </script>
+    <script src="js/jquery-3.2.1.min.js"></script>
+    <script type="text/jscript" src="js/moxie.js"></script>
+    <script type="text/jscript" src="js/plupload.dev.js"></script>
+    <script type="text/jscript" src="js/qiniu.min.js"></script>
+    
+    
+    <script>
+        window.error = function(e){
+            console.error(e)
+        }
+        
+        var name = '',
+            phone = '',
+            card = '',
+            code = '',
+            isCard = false,
+            isPhone = false,
+            cerarr = [],
+            addFlag = false,
+            pickfilesImg = "",
+            pickfiles2Img = "",
+            pickfilesKey = "",
+            pickfiles2Key = "",
+            partten = /^1[3,5,8]\d{9}$/,
+            reg = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/,
+            //btnHight = false,
+            timer = 3,  //默认倒数30秒
+            stop  =  false,   //默认是停止的，但界面加载之后会变成false
+            flag = true,
+            suoshuList = '',
+            suoshuBox = false,
+            isShowHigh = '',
+            shopName = '',
+            shopId = '',
+            shoppId = '',
+            selectShopp = '请选择所属门店',
+	        iphone = false,
+            icard = false,
+            cername = "",
+            isshow = true;
+
+        
+        $('#time').text(timer);
+        //blur
+        $('#addInput').bind('blur',blurFn);
+        //点击添加店铺按钮
+        $('#addBtn').on('click',function(){
+            $('#addInput').unbind();
+            var addVal = $('#addInput').val();
+            var addHtml = '<p><span class="tit">管理门店</span>'+addVal+' <span class="fr need removebtn"><img src="./img/removebtn.png" alt=""></span></p>';
+            if(addVal){
+                cerarr.push(addVal);
+                cerarr = unique(cerarr);
+                console.log(cerarr)
+                if(addFlag){
+                    $('#addShopBox').append(addHtml);
+                    $('#addInput').val('');
+                }else{
+                    $('#addInput').bind('blur',blurFn); 
+                }
+            }
+        });
+        //删除店铺
+        $('#addShopBox').on('click','.removebtn',function(){
+            var idx = $(this).parent().index();
+            $(this).parent().remove();
+            cerarr.splice(idx,1);
+            console.log(cerarr)
+        })
+        //发送验证码
+        $('#sendCode').on('click',function(){
+            var phone = $('#phoneCode').val();
+            var isPhone = ifPhone(phone);
+            if(phone == ''){
+                $("#toast").html('请添加手机号!').fadeIn(300).delay(1000).fadeOut(300);
+                return false;
+            }else if(!isPhone){
+                $("#toast").html('手机号不正确,请重新输入!').fadeIn(300).delay(1000).fadeOut(300);
+                return false;
+            }
+            $.post("http://app-v1.rekoon.cn/u/sensCode",{
+                'type':1, //1添加，2修改密码，1添加店长店铺
+                'phone':phone,
+            },function(data){
+                if(data.code == 0){
+                    $('#sendCode').hide();
+                    $('#timeBox').show();
+                    startTimer();
+                }else if(data.code < 0){
+                    $("#toast").html(data.errMsg).fadeIn(300).delay(1000).fadeOut(300); 
+                }
+            });
+        })
+        //确认提交
+        $('#addAssistant_save_btn').on('click',function(){
+            var name = $('#username').val();
+            var code = $('#codeVal').val();
+            var phone = $('#phoneCode').val();
+            var cardCode = $('#cardCode').val();
+            var code = $('#codeVal').val();
+            var if_phone = ifPhone(phone);
+            var if_card = ifCard (cardCode);
+            console.log(cerarr)
+            if(cerarr.length == 0){
+                $("#toast").html('请添加店铺!').fadeIn(300).delay(1000).fadeOut(300);
+            }else if(name == ''){
+                $("#toast").html('请添加姓名!').fadeIn(300).delay(1000).fadeOut(300);
+            }else if(phone == ''){
+                $("#toast").html('请添加手机号!').fadeIn(300).delay(1000).fadeOut(300);
+            }else if(!if_phone){
+                $("#toast").html('手机号不正确,请重新输入!').fadeIn(300).delay(1000).fadeOut(300);
+            }else if(cardCode == ''){
+                $("#toast").html('请添加身份证号!').fadeIn(300).delay(1000).fadeOut(300);
+            }else if(!if_card){
+                $("#toast").html('身份证号不正确,请重新输入!').fadeIn(300).delay(1000).fadeOut(300);
+            }else if(pickfilesKey == ''){
+                $("#toast").html('请上传身份证正面照片!').fadeIn(300).delay(1000).fadeOut(300);
+            }else if(pickfiles2Key == ''){
+                $("#toast").html('请上传身份证反面照片!').fadeIn(300).delay(1000).fadeOut(300);
+            }else if(code == ''){
+                $("#toast").html('请输入验证码!').fadeIn(300).delay(1000).fadeOut(300);
+            }else{
+                $.post("http://app-v1.rekoon.cn/m/shop/store",{
+                    'shopName':cerarr,
+                    'userName':name,
+                    'idCard':cardCode,
+                    'phone':phone,
+                    'cardImg1': pickfilesKey,
+                    'cardImg2': pickfiles2Key,
+                    'code': code,
+                },function(data){
+                    if(data.code == 0){
+                        window.location.href = 'certificationResults.html?suc'
+                    }else if(data.code < 0){
+                       // window.location.href = 'certificationResults.html?err'
+                    }
+                });
+            }
+        });
+        //验证手机号
+        function ifPhone  (inputString) {
+            if(partten.test(inputString)){
+                return true;
+            }else{
+                return false;
+            }
+        }
+        //验证身份证号
+        function ifCard (inputString) {
+           if(reg.test(inputString)){
+                return true;
+            }else{
+                return false;
+            }
+        }
+        function update () {
+            if(timer <= 0) 
+            {
+                timer = 6;
+                stop = false;
+                $('#time').text(timer);
+                $('#timeBox').hide();
+                $('#sendCode').show();   
+                clearInterval(Interval);     
+            }
+            else{
+                timer--;
+                $('#time').text(timer);
+            }
+        };
+        function startTimer () {
+            //如果是false就开始倒计时，如果是true就停止倒计时
+            if(stop == false) {
+                //alert(stop)
+                Interval = setInterval(function(){
+                    update ();
+                },1000);
+            }else{
+                clearInterval(Interval);
+            }   
+            stop = !stop;
+        };
+        //blur function
+        function blurFn(){
+            var addVal = $('#addInput').val();
+            var addHtml = '<p><span class="tit">管理门店</span>'+addVal+' <span class="fr need removebtn" ><img src="./img/removebtn.png" alt=""></span></p>';
+            if(addVal){
+                cerarr.push(addVal);
+                cerarr = unique(cerarr);
+                if(addFlag){
+                    $('#addShopBox').append(addHtml);
+                    $('#addInput').val('');
+                }
+                
+            }
+        };
+        //去重；
+        function unique(arr){
+            var res = [];
+            var json = {};
+            for(var i = 0; i < arr.length; i++){
+                if(!json[arr[i]]){
+                    res.push(arr[i]);
+                    json[arr[i]] = 1;
+                    addFlag = true;
+                }else{
+                    $("#toast").html('店铺已存在!').fadeIn(300).delay(1000).fadeOut(300);
+                    //alert('店铺已存在');
+                    addFlag = false;
+                }
+            }
+            return res;
+        };
+        //获取七牛上传token
+        function getToken(){
+            $.post("http://app-v1.rekoon.cn/g/upToken",
+                function(data){
+                    if(data.code == 0){
+                        domain = data.data.domain;
+                        token = data.data.token;
+                        time = data.data.domain;
+                        console.log(data)
+                        updata('container','pickfiles');
+                        updata('container2','pickfiles2');
+                    }else if(data.code < 0){
+                        $("#toast").html(data.errMsg).fadeIn(300).delay(1000).fadeOut(300); 
+                    }
+                });
+        };
+        getToken();
+        //预览大图
+        $('.smallImg').on('click',function(){
+            var imgUrl = $(this).attr('data');
+            $('#markBox').show();
+            $('#bigImg').attr('src',imgUrl)
+        })
+        //关闭预览大图
+        $('#bigImg').on('click',function(){
+            $('#markBox').hide();
+            $('#bigImg').attr('src','')
+        });
+        function updata (parentbox,curbox){
+            var uploader = Qiniu.uploader({
+                            runtimes: 'html5,html4',    //上传模式,依次退化
+                            browse_button: curbox,       //上传选择的点选按钮，**必需**
+                            uptoken: token,            //Ajax请求upToken的Url，**强烈建议设置**（服务端提供）
+                            // uptoken : '', //若未指定uptoken_url,则必须指定 uptoken ,uptoken由其他程序生成
+                            // unique_names: true, // 默认 false，key为文件名。若开启该选项，SDK为自动生成上传成功后的key（文件名）。
+                            // save_key: true,   // 默认 false。若在服务端生成uptoken的上传策略中指定了 `sava_key`，则开启，SDK会忽略对key的处理
+                            domain: domain,   //bucket 域名，下载资源时用到，**必需**
+                            get_new_uptoken: false,  //设置上传文件的时候是否每次都重新获取新的token
+                            container: parentbox,           //上传区域DOM ID，默认是browser_button的父元素，
+                            max_file_size: '100mb',           //最大文件体积限制
+                           // flash_swf_url: 'js/plupload/Moxie.swf',  //引入flash,相对路径
+                            //max_retries: 3,                   //上传失败最大重试次数
+                            //dragdrop: true,                   //开启可拖曳上传
+                            chunk_size: '4mb',                //分块上传时，每片的体积
+                            auto_start: true,                 //选择文件后自动上传，若关闭需要自己绑定事件触发上传
+                            init: {
+                                'FilesAdded': function(up, files) {
+                                    console.log('FilesAddedFilesAdded',files)
+                                    plupload.each(files, function(file) {
+                                        // 文件添加进队列后,处理相关的事情
+                                    });
+                                },
+                                'BeforeUpload': function(up, file) {
+                                    console.log('BeforeUpload',file)
+                                       // 每个文件上传前,处理相关的事情
+                                },
+                                'UploadProgress': function(up, file) {
+                                    // var curboxInfo = curbox+"Info"
+                                    // curboxInfo = '正在上传'
+                                    $('#'+curbox).text('正在上传')
+                                    console.log(curbox)
+                                       // 每个文件上传时,处理相关的事情
+                                },
+                                'FileUploaded': function(up, file, info) {
+                                    var domain = up.getOption('domain');
+                                    var res = JSON.parse(info.response);
+                                    var sourceLink = domain +"/"+ res.key+'?imageView2/1/w/322/h/242'; //获取上传成功后的文件的Url
+                                    var sourceLinkBig =  domain +"/"+ res.key+'?imageView2/1/w/750/h/1334'; 
+                                    if(curbox == 'pickfiles'){
+                                        pickfilesKey = res.key;
+                                    }else if(curbox == 'pickfiles2'){
+                                        pickfiles2Key = res.key;
+                                    }
+                                    console.log(pickfilesKey)
+                                    $('#'+curbox).text('上传成功')
+                                    $('#'+curbox+'Img').show().attr('src',sourceLink);
+                                    $('#'+curbox+'Img').show().attr('data',sourceLinkBig);
+                                },
+                                'Error': function(up, err, errTip) {
+                                    console.error(errTip)
+                                       //上传出错时,处理相关的事情
+                                },
+                                'UploadComplete': function() {
+                                       //队列文件处理完毕后,处理相关的事情
+                                },
+                                'Key': function(up, file) {
+                                    // 若想在前端对每个文件的key进行个性化处理，可以配置该函数
+                                    // 该配置必须要在 unique_names: false , save_key: false 时才生效
+
+                                    var key = "jiance/"+Date.parse(new Date());
+                                    // do something with key here
+                                    return key
+                                }
+                            }
+                        });
+                        
+        };
+              
+    
+    </script>
+
+  </body>
+</html>

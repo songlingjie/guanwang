@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html >
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0,maximum-scale=1.0">
+    <meta content="h5 view" name="description">
+    <meta content="h5 view" name="keywords">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- Set render engine for 360 browser -->
+    <meta name="renderer" content="webkit">
+    <!-- No Baidu Siteapp-->
+    <meta http-equiv="Cache-Control" content="no-siteapp"/>
+    <meta http-equiv="Cache-Control" content="no-transform" />
+    <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">  -->
+    <meta name = "format-detection" content="telephone = no" />
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/phoneVerification.css">
+    <title></title>
+  </head>
+  <body>
+    <div id="app" class="app">
+        <div class="changePassword_wrap">
+            <header class="header headerBorderbtm">
+                <!-- <a class="back" href="javascript:void(0)" onclick="javascript:history.go(-1)"></a> -->
+                <p>手机验证</p>
+            </header>
+            <p class="tishi">验证手机号后钱款将立即转入您的微信钱包～</p>
+            <div class="changePassword_box personalData_box">
+                <p><input id="phoneCode" class="fl" v-model="phone" type="tel" placeholder="请输入11位手机号码"></p>
+                <p>
+                    <input id="codeVal" class="fl" type="tel" placeholder="请输入验证码">
+                    <button class="code fr" id="sendCode">发送验证码</button>
+                    <span class="countdown" id="timeBox"> <span id="time"></span>s 后重获取</span>
+                </p>
+            </div> 
+           
+            <div class="evaluationResults_agreeBox">我已接受<a href="agreement.html">《粒电回收协议》</a><span id="agree_btn" class="agree_btn"></span></div>
+            <div class="cir_btn mar45 gray" id="confirmBtn">确认</div>
+            <div class="toast" id="toast">请输入手机号码</div>
+        </div>
+        
+    </div>
+    <script type="text/javascript">
+      !function(a,b){function c(){var b=f.getBoundingClientRect().width;b/i>540&&(b=540*i);var c=b/10;f.style.fontSize=c+"px",k.rem=a.rem=c}var d,e=a.document,f=e.documentElement,g=e.querySelector('meta[name="viewport"]'),h=e.querySelector('meta[name="flexible"]'),i=0,j=0,k=b.flexible||(b.flexible={});if(g){var l=g.getAttribute("content").match(/initial\-scale=([\d\.]+)/);l&&(j=parseFloat(l[1]),i=parseInt(1/j))}else{if(h){var m=h.getAttribute("content");if(m){var n=m.match(/initial\-dpr=([\d\.]+)/),o=m.match(/maximum\-dpr=([\d\.]+)/);n&&(i=parseFloat(n[1]),j=parseFloat((1/i).toFixed(2))),o&&(i=parseFloat(o[1]),j=parseFloat((1/i).toFixed(2)))}}}if(!i&&!j){var p=a.navigator.userAgent,q=(!!p.match(/android/gi),!!p.match(/iphone/gi)),r=q&&!!p.match(/OS 9_3/),s=a.devicePixelRatio;i=q&&!r?s>=3&&(!i||i>=3)?3:s>=2&&(!i||i>=2)?2:1:1,j=1/i}if(f.setAttribute("data-dpr",i),!g){if(g=e.createElement("meta"),g.setAttribute("name","viewport"),g.setAttribute("content","initial-scale="+j+", maximum-scale="+j+", minimum-scale="+j+", user-scalable=no"),f.firstElementChild){f.firstElementChild.appendChild(g)}else{var t=e.createElement("div");t.appendChild(g),e.write(t.innerHTML)}}a.addEventListener("resize",function(){clearTimeout(d),d=setTimeout(c,300)},!1),a.addEventListener("pageshow",function(a){a.persisted&&(clearTimeout(d),d=setTimeout(c,300))},!1),"complete"===e.readyState?e.body.style.fontSize=12*i+"px":e.addEventListener("DOMContentLoaded",function(){e.body.style.fontSize=12*i+"px"},!1),c(),k.dpr=a.dpr=i,k.refreshRem=c,k.rem2px=function(a){var b=parseFloat(a)*this.rem;return"string"==typeof a&&a.match(/rem$/)&&(b+="px"),b},k.px2rem=function(a){var b=parseFloat(a)/this.rem;return"string"==typeof a&&a.match(/px$/)&&(b+="rem"),b}}(window,window.lib||(window.lib={}));
+    </script>
+    <script src="js/jquery-3.2.1.min.js"></script>
+    <script>
+        (function ($) {
+            $.getUrlParam = function (name) {
+                var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+                var r = window.location.search.substr(1).match(reg);
+
+                if (r != null) return unescape(r[2]); return null;
+            }
+            var timer = 60,
+                stop = false,   //默认是停止的，但界面加载之后会变成false
+                Interval = null,
+                orderId = $.getUrlParam('orderId'),
+                sign = $.getUrlParam('sign'),
+                openid = $.getUrlParam('openid'),
+                token = $.getUrlParam('token'),
+                flag = true,
+                btnFlag = true;
+                partten = /^1[3,5,8]\d{9}$/;
+             if(!openid && !token){
+                 window.location.href = 'https://api.rekoon.cn/wx/open';
+             }
+
+            
+            $('#time').text(timer);
+            //同意
+            $('#agree_btn').on('click',function(){
+                if(btnFlag){
+                    $('#agree_btn').addClass('noagreen');
+                    $('#agree_btn').removeClass('agree_btn');
+                    btnFlag = false;
+                    btnHigh()
+                }else{
+                    $('#agree_btn').addClass('agree_btn');
+                    $('#agree_btn').removeClass('noagreen');
+                    btnFlag = true;
+                    btnHigh()
+                }
+            });
+            //验证手机号
+            function ifPhone  (inputString) {
+                var fl=false;
+                if(inputString == ''){
+                    
+                    $("#toast").html('请添加手机号!').fadeIn(300).delay(1000).fadeOut(300);
+                    return false;
+                }else if(partten.test(inputString)){
+                    return true;
+                }else{
+                    $("#toast").html('手机号不正确,请重新输入!').fadeIn(300).delay(1000).fadeOut(300);
+                    return false;
+                }
+            }
+            function update () {
+                if(timer <= 0) 
+                {
+                    timer = 60;
+                    stop = false;
+                    $('#time').text(timer);
+                    $('#timeBox').hide();
+                    $('#sendCode').show();   
+                    clearInterval(Interval);     
+                }
+                else{
+                    timer--;
+                    $('#time').text(timer);
+                }
+            };
+            function startTimer () {
+                //如果是false就开始倒计时，如果是true就停止倒计时
+                if(stop == false) {
+                    //alert(stop)
+                    Interval = setInterval(function(){
+                        update ();
+                    },1000);
+                }else{
+                    clearInterval(Interval);
+                }   
+                stop = !stop;
+            };
+            //按钮高亮
+            function btnHigh(){
+                var phone = $('#phoneCode').val();
+                var phoneOk = partten.test(phone);
+                var codeOk = $('#codeVal').val();
+                if(phoneOk && codeOk && btnFlag){
+                    $('#confirmBtn').addClass('blue');
+                }else{
+                    $('#confirmBtn').removeClass('blue');
+                }
+            };
+            $('#phoneCode').on('keyup',function(){
+                btnHigh();
+            });
+            $('#codeVal').on('keyup',function(){
+                btnHigh();
+            });
+            //发送验证码
+            $('#sendCode').on('click',function(){
+                var phone = $('#phoneCode').val();
+                var isPhone = ifPhone(phone);
+                if(!isPhone){
+                    return false;
+                }
+                $.post("https://api.rekoon.cn/s/payment/code/send",{
+                    'orderId':orderId,
+                    'sign':sign,
+                    'phone':phone,
+                },function(data){
+                    if(data.code == 0){
+                        $('#sendCode').hide();
+                        $('#timeBox').show();
+                        startTimer();
+                    }else if(data.code < 0){
+                        $("#toast").html(data.errMsg).fadeIn(300).delay(1000).fadeOut(300); 
+                    }
+                });
+            })
+        
+            //确认按钮
+            $('#confirmBtn').on('click',function(){
+                if(!flag){
+                    return false;
+                }
+                if(!$(this).hasClass('blue')){
+                    return false;
+                }
+                if(!btnFlag){
+                    $("#toast").html('请阅读并同意《粒电回收协议》!').fadeIn(300).delay(1000).fadeOut(300);
+                    return false;
+                }
+                flag = false;
+                var code = $('#codeVal').val();
+                var phone = $('#phoneCode').val();
+                $.post("https://api.rekoon.cn/s/payment/pay",{
+                    'orderId':orderId,
+                    'sign':sign,
+                    'phone':phone,
+                    'code':code,
+                    'openid':openid,
+                    'token':token,
+                },function(data){
+                    flag = true;
+                    if(data.code == 0){
+                        window.location.href = 'paySuccess.html';
+                    }else if(data.code == -14){
+                        $("#toast").html(data.errMsg).fadeIn(300).delay(1000).fadeOut(300);
+                    }else if(data.code < 0){
+                        window.location.href = 'payFail.html';
+                    }
+                });
+            }) 
+        })(jQuery);
+        
+              
+    
+    </script>
+
+  </body>
+</html>
