@@ -11,7 +11,6 @@
         "overtrue/wechat": "^3.3",
         "simplesoftwareio/simple-qrcode": "^1.5",
         "qiniu/php-sdk":"7.*",
-        "overtrue/wechat": "~3.1",
         "workerman/gateway-worker": "^3.0",
         "PHPOffice/PHPExcel": "^1.8"
     },
