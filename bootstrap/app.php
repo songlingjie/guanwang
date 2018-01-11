@@ -112,28 +112,14 @@ $app->singleton('rsaAuth', function () {
     return new \App\Library\Api_Auth;
 });
 
-$app->group(['namespace' => 'App\Http\Controllers\Apps','middleware' => 'Browse'], function ($app) {
-    $app->group(['prefix' => 'wx','namespace' => 'WeChat'], function ($app) {
-        require __DIR__ . '/../app/Http/Routes/routes_wechat.php';
+$app->group(['namespace' => 'App\Http\Controllers\Apps'], function ($app) {
+    $app->group(['prefix' => 'admin','namespace' => 'Admin'], function ($app) {
+        require __DIR__ . '/../app/Http/Routes/routes_admin.php';
     });
-    $app->group(['prefix' => 'g','namespace' => 'Globals'], function ($app) {
-        require __DIR__ . '/../app/Http/Routes/routes_global.php';
+    $app->group(['prefix' => '/','namespace' => 'Web'], function ($app) {
+        require __DIR__ . '/../app/Http/Routes/routes_web.php';
     });
-    $app->group(['prefix' => 'i','namespace' => 'Ident'], function ($app) {
-        require __DIR__ . '/../app/Http/Routes/routes_ident.php';
-    });
-    $app->group(['prefix' => 'u','namespace' => 'User'], function ($app) {
-        require __DIR__ . '/../app/Http/Routes/routes_user.php';
-    });
-    $app->group(['prefix' => 'm','namespace' => 'Manager'], function ($app) {
-        require __DIR__ . '/../app/Http/Routes/routes_manager.php';
-    });
-    $app->group(['prefix' => 's','namespace' => 'Staff'], function ($app) {
-        require __DIR__ . '/../app/Http/Routes/routes_staff.php';
-    });
-    $app->group(['prefix' => '/','namespace' => 'Normal'], function ($app) {
-        require __DIR__ . '/../app/Http/Routes/routes_normal.php';
-    });
+
 });
 
 return $app;
